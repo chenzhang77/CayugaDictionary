@@ -468,11 +468,6 @@ public class DictionaryController {
 //        		   i++;     
 //        	   }
 //        	   
-//        	   System.out.println("outside in update dictionaryEnglishList");
-//        	   System.out.println(old.secondcolProperty().getValue());
-//        	   System.out.println(old.thirdcolProperty().getValue());
-//        	   System.out.println(tempData.getSecondcol());
-//        	   System.out.println(tempData.getThirdcol());
                for(int j=0; j<dictionaryEnglishList.size();j++) {
             	   //System.out.println(dictionaryEnglishList.get(j));
             	   if(dictionaryEnglishList.get(j).toString().equals(english) 
