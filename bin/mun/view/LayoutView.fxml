@@ -25,24 +25,23 @@
                               <Image url="@Untitled-1.png" />
                            </image>
                         </ImageView>
-                        <RadioButton fx:id="related_1" layoutX="47.0" layoutY="135.0" mnemonicParsing="false" text="RadioButton">
+                        <RadioButton fx:id="related_1" layoutX="45.0" layoutY="98.0" mnemonicParsing="false" text="RadioButton">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </RadioButton>
-                        <RadioButton fx:id="related_2" layoutX="47.0" layoutY="157.0" mnemonicParsing="false" text="RadioButton">
+                        <RadioButton fx:id="related_2" layoutX="45.0" layoutY="120.0" mnemonicParsing="false" text="RadioButton">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </RadioButton>
-                        <RadioButton fx:id="related_3" layoutX="47.0" layoutY="179.0" mnemonicParsing="false" text="RadioButton">
+                        <RadioButton fx:id="related_3" layoutX="45.0" layoutY="142.0" mnemonicParsing="false" text="RadioButton">
                            <font>
                               <Font size="12.0" />
                            </font>
                         </RadioButton>
                         <Button fx:id="searchBut" layoutX="34.0" layoutY="27.0" mnemonicParsing="false" onAction="#searchButtonAction" prefHeight="27.0" prefWidth="98.0" text="Search" />
-                        <Button fx:id="partialBut" layoutX="14.0" layoutY="63.0" mnemonicParsing="false" onAction="#partialSearch" prefHeight="27.0" prefWidth="143.0" text="Partial Search" />
-                        <Button fx:id="relatedWordBut" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" onAction="#relatedWord" prefHeight="27.0" prefWidth="143.0" text="Related Word" />
+                        <Button fx:id="relatedWordBut" layoutX="12.0" layoutY="63.0" mnemonicParsing="false" onAction="#relatedWord" prefHeight="27.0" prefWidth="143.0" text="Related Word" />
                      </children>
                   </Pane>
                </children>

@@ -311,9 +311,13 @@ public class DictionaryController {
     }
     
     private void initialArrayList() {
+    	
     	String file = Constant.dictionaryPath;
 		FileInputStream fstream;
+		
 		try {
+			
+			
 			fstream = new FileInputStream(file);
 			Reader chars = new InputStreamReader(fstream, StandardCharsets.UTF_16);
 			BufferedReader br = new BufferedReader(chars);
@@ -323,8 +327,6 @@ public class DictionaryController {
 			while ((strLine = br.readLine()) != null && !strLine.trim().isEmpty())   {
 				
 				String[] outstring = strLine.split("     ");
-				//System.out.println(outstring.length);
-				//if(outstring.length !=2)System.out.println(strLine);
 				dictionaryCayugaList.add(outstring[0].replaceAll("\\p{C}", "").trim());
 				dictionaryEnglishList.add(outstring[1]);
 			}
@@ -371,69 +373,64 @@ public class DictionaryController {
     
     @FXML
     public void onEnter(ActionEvent ae){
-    	       
-       	mainApp.getData().clear();
-    	related_1.setVisible(false);
-    	related_2.setVisible(false);
-    	related_3.setVisible(false);
     	
-       	searchBut.requestFocus();
-       	String currentInput = inputText.getText();
-       	if(currentInput.length() == 0) return;
-		if(englishBut.selectedProperty().getValue()) {
-
-			for(int i=0; i<dictionaryEnglishList.size();i++) {
-			
-				String words = dictionaryEnglishList.get(i).toString();
-		
-				String matches = "^"+currentInput+".*";
-				
-				StringBuilder words_sb = new StringBuilder(words);
-				for(int a=0; a<words_sb.length();a++) {
-					
-					if(words_sb.charAt(a)==')'||words_sb.charAt(a)=='(') words_sb.deleteCharAt(a);
-					
-				}
-				words = words_sb.toString();
-				
-				StringBuilder sb = new StringBuilder(matches);
-				for(int a=0; a<sb.length();a++) {
-					
-					if(sb.charAt(a)==')'||sb.charAt(a)=='(') sb.deleteCharAt(a);
-					
-				}
-					
-				matches = sb.toString();
-				
-//				System.out.println(words);
-//				System.out.println(matches);
-				
-				if(words.matches(matches)) {
-
-					Dictionary tempData = new Dictionary();
-					tempData.setSecondcol(dictionaryEnglishList.get(i));
-					tempData.setThirdcol(dictionaryCayugaList.get(i));
-					mainApp.getData().add(tempData);
-				}
-			}	
-		} else {
-			
-			for(int i=0; i<dictionaryCayugaList.size();i++) {
-				
-				if(dictionaryCayugaList.get(i).toString().matches("^"+currentInput+".*")) {
-					//System.out.println("coming in 1");
-					Dictionary tempData = new Dictionary();
-					tempData.setSecondcol(dictionaryEnglishList.get(i));
-					tempData.setThirdcol(dictionaryCayugaList.get(i));
-					mainApp.getData().add(tempData);
-				}
-			}
-			
-		}
-		
-		
-		
-		
+    	searchBut.requestFocus();
+    	searchButtonAction();
+    	return;
+    	
+//       	mainApp.getData().clear();
+//    	related_1.setVisible(false);
+//    	related_2.setVisible(false);
+//    	related_3.setVisible(false);
+//    	
+//       	searchBut.requestFocus();
+//       	String currentInput = inputText.getText();
+//       	if(currentInput.length() == 0) return;
+//		if(englishBut.selectedProperty().getValue()) {
+//
+//			for(int i=0; i<dictionaryEnglishList.size();i++) {
+//			
+//				String words = dictionaryEnglishList.get(i).toString();
+//		
+//				String matches = "^"+currentInput+".*";
+//				
+//				StringBuilder words_sb = new StringBuilder(words);
+//				for(int a=0; a<words_sb.length();a++) {
+//					
+//					if(words_sb.charAt(a)==')'||words_sb.charAt(a)=='(') words_sb.deleteCharAt(a);
+//					
+//				}
+//				words = words_sb.toString();
+//				
+//				StringBuilder sb = new StringBuilder(matches);
+//				for(int a=0; a<sb.length();a++) {
+//					
+//					if(sb.charAt(a)==')'||sb.charAt(a)=='(') sb.deleteCharAt(a);
+//					
+//				}
+//					
+//				matches = sb.toString();				
+//				if(words.matches(matches)) {
+//
+//					Dictionary tempData = new Dictionary();
+//					tempData.setSecondcol(dictionaryEnglishList.get(i));
+//					tempData.setThirdcol(dictionaryCayugaList.get(i));
+//					mainApp.getData().add(tempData);
+//				}
+//			}	
+//		} else {
+//			
+//			for(int i=0; i<dictionaryCayugaList.size();i++) {
+//				
+//				if(dictionaryCayugaList.get(i).toString().matches("^"+currentInput+".*")) {
+//
+//					Dictionary tempData = new Dictionary();
+//					tempData.setSecondcol(dictionaryEnglishList.get(i));
+//					tempData.setThirdcol(dictionaryCayugaList.get(i));
+//					mainApp.getData().add(tempData);
+//				}
+//			}	
+//		}	
     }
     
     public void showAction(ActionEvent ae) {
@@ -447,42 +444,18 @@ public class DictionaryController {
 	    		   
 	    	String english = tempData.getSecondcol();
 	    	String cayuga = tempData.getThirdcol();
-	    	
 	    	Dictionary old = mainApp.showUpdateItemDialog(tempData);
-//           if (old != null) {
-//        	   ListIterator<Dictionary> iterator =  mainApp.getData().listIterator(0);
-//        	   int i = 0;
-//        	   while (iterator.hasNext()){
-//        		   Dictionary iteratoerDic = iterator.next();
-//        		   
-//        		   if(iteratoerDic.secondcolProperty().getValue().equals(old.secondcolProperty().getValue())
-//        				   &&iteratoerDic.thirdcolProperty().getValue().equals(old.thirdcolProperty().getValue())){
-////        			   System.out.println("coming");
-////        			   System.out.println(mainApp.getData().get(i).getSecondcol());
-////        			   System.out.println(mainApp.getData().get(i).getThirdcol());
-////        			   System.out.println(tempData.getSecondcol());
-////        			   System.out.println(tempData.getThirdcol());
-//        			   mainApp.getData().get(i).setSecondcol(tempData.getSecondcol());
-//        			   mainApp.getData().get(i).setThirdcol(tempData.getThirdcol());
-//        		   }
-//        		   i++;     
-//        	   }
-//        	   
+	    		   
                for(int j=0; j<dictionaryEnglishList.size();j++) {
             	   //System.out.println(dictionaryEnglishList.get(j));
             	   if(dictionaryEnglishList.get(j).toString().equals(english) 
             			   &&dictionaryCayugaList.get(j).toString().equals(cayuga))  {
-            		 //System.out.println("coming in update dictionaryEnglishList");
+
             		   dictionaryEnglishList.set(j, tempData.getSecondcol());
             		   dictionaryCayugaList.set(j, tempData.getThirdcol());
             		   
-            	   }
-            	   
+            	   }      	   
                }
-        	   
-//           }
-           
-
 	    } else {
 	        // Nothing selected.
 	    	Alert alert = new Alert(AlertType.INFORMATION);
@@ -539,13 +512,7 @@ public class DictionaryController {
     	
     }
     
-       
-    @FXML
-    public void searchButtonAction() {
-    	
-    	onEnter(null);	
-    }
-    
+           
     @FXML
     public void MouseMoveText() {
     	mainScene.requestFocus();
@@ -578,6 +545,67 @@ public class DictionaryController {
     	String currentString = inputText.getText();
     	inputText.setText(currentString+"ę");
     	inputText.positionCaret(currentString.length()+1);
+    }
+    
+    @FXML
+    public void searchButtonAction() {	
+    	//onEnter(null);
+    	
+    	mainApp.getData().clear();
+    	related_1.setVisible(false);
+    	related_2.setVisible(false);
+    	related_3.setVisible(false);
+    	
+    	
+       	String currentInput = inputText.getText();
+       	if(currentInput.length() == 0) return;
+		if(englishBut.selectedProperty().getValue()) {
+
+			for(int i=0; i<dictionaryEnglishList.size();i++) {
+			
+				String words = dictionaryEnglishList.get(i).toString();
+		
+				String matches = ".*"+currentInput+".*";
+				
+				StringBuilder words_sb = new StringBuilder(words);
+				for(int a=0; a<words_sb.length();a++) {
+					
+					if(words_sb.charAt(a)==')'||words_sb.charAt(a)=='(') words_sb.deleteCharAt(a);
+					
+				}
+				words = words_sb.toString();
+				
+				StringBuilder sb = new StringBuilder(matches);
+				for(int a=0; a<sb.length();a++) {
+					
+					if(sb.charAt(a)==')'||sb.charAt(a)=='(') sb.deleteCharAt(a);
+					
+				}
+					
+				matches = sb.toString();
+							
+				if(words.matches(matches)) {
+
+					Dictionary tempData = new Dictionary();
+					tempData.setSecondcol(dictionaryEnglishList.get(i));
+					tempData.setThirdcol(dictionaryCayugaList.get(i));
+					mainApp.getData().add(tempData);
+				}
+			}	
+		} else {
+			
+			for(int i=0; i<dictionaryCayugaList.size();i++) {
+				
+				if(dictionaryCayugaList.get(i).toString().matches(".*"+currentInput+".*")) {
+					//System.out.println("coming in update dictionaryCayugaList");
+					Dictionary tempData = new Dictionary();
+					tempData.setSecondcol(dictionaryEnglishList.get(i));
+					tempData.setThirdcol(dictionaryCayugaList.get(i));
+					mainApp.getData().add(tempData);
+				}
+			}
+			
+		}
     }
     
     @FXML
