@@ -378,14 +378,14 @@ public class DictionaryController {
     	searchButtonAction();
     	return;
     	
-//       	mainApp.getData().clear();
+//      mainApp.getData().clear();
 //    	related_1.setVisible(false);
 //    	related_2.setVisible(false);
 //    	related_3.setVisible(false);
 //    	
-//       	searchBut.requestFocus();
-//       	String currentInput = inputText.getText();
-//       	if(currentInput.length() == 0) return;
+//      searchBut.requestFocus();
+//      String currentInput = inputText.getText();
+//      if(currentInput.length() == 0) return;
 //		if(englishBut.selectedProperty().getValue()) {
 //
 //			for(int i=0; i<dictionaryEnglishList.size();i++) {
@@ -405,10 +405,8 @@ public class DictionaryController {
 //				StringBuilder sb = new StringBuilder(matches);
 //				for(int a=0; a<sb.length();a++) {
 //					
-//					if(sb.charAt(a)==')'||sb.charAt(a)=='(') sb.deleteCharAt(a);
-//					
-//				}
-//					
+//					if(sb.charAt(a)==')'||sb.charAt(a)=='(') sb.deleteCharAt(a);	
+//				}		
 //				matches = sb.toString();				
 //				if(words.matches(matches)) {
 //
@@ -596,7 +594,26 @@ public class DictionaryController {
 			
 			for(int i=0; i<dictionaryCayugaList.size();i++) {
 				
-				if(dictionaryCayugaList.get(i).toString().matches(".*"+currentInput+".*")) {
+				String words = dictionaryCayugaList.get(i).toString();
+				StringBuilder words_sb = new StringBuilder(words);
+				for(int a=0; a<words_sb.length();a++) {
+					
+					if(words_sb.charAt(a)=='ˀ'||words_sb.charAt(a)==':') words_sb.deleteCharAt(a);
+					
+				}
+				words = words_sb.toString();
+				
+				String matches = ".*"+currentInput+".*";
+				
+				StringBuilder sb = new StringBuilder(matches);
+				for(int a=0; a<sb.length();a++) {
+					
+					if(sb.charAt(a)=='ˀ'||sb.charAt(a)==':') sb.deleteCharAt(a);
+					
+				}
+				matches = sb.toString();
+				
+				if(words.toString().matches(matches)) {
 					//System.out.println("coming in update dictionaryCayugaList");
 					Dictionary tempData = new Dictionary();
 					tempData.setSecondcol(dictionaryEnglishList.get(i));
