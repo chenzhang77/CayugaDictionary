@@ -135,6 +135,7 @@ public class DictionaryController {
     	    	
     	    	ArrayList<String> aa = new ArrayList<>();
     	    	String inputString = param.getUserText();
+    	    	inputString = inputString.replace("*", ".*");
     	    	//System.out.println(inputString);
     	    	if(inputString.length() != 0 && inputString != null) {
         	    	
@@ -563,7 +564,7 @@ public class DictionaryController {
 			
 				String words = dictionaryEnglishList.get(i).toString();
 		
-				String matches = ".*"+currentInput+".*";
+				
 				
 				StringBuilder words_sb = new StringBuilder(words);
 				for(int a=0; a<words_sb.length();a++) {
@@ -572,16 +573,17 @@ public class DictionaryController {
 					
 				}
 				words = words_sb.toString();
+				words = " "+words+" ";
 				
-				StringBuilder sb = new StringBuilder(matches);
+				
+				StringBuilder sb = new StringBuilder(currentInput);
 				for(int a=0; a<sb.length();a++) {
 					
-					if(sb.charAt(a)==')'||sb.charAt(a)=='(') sb.deleteCharAt(a);
-					
+					if(sb.charAt(a)==')'||sb.charAt(a)=='(') sb.deleteCharAt(a);					
 				}
-					
-				matches = sb.toString();
-							
+				String matches = sb.toString();
+				matches = createRegularExpression(matches);
+				
 				if(words.matches(matches)) {
 
 					Dictionary tempData = new Dictionary();
@@ -602,8 +604,9 @@ public class DictionaryController {
 					
 				}
 				words = words_sb.toString();
+				words = " "+words+" ";
 				
-				String matches = ".*"+currentInput+".*";
+				String matches = currentInput;
 				
 				StringBuilder sb = new StringBuilder(matches);
 				for(int a=0; a<sb.length();a++) {
@@ -612,6 +615,8 @@ public class DictionaryController {
 					
 				}
 				matches = sb.toString();
+				matches = createRegularExpression(matches);
+
 				
 				if(words.toString().matches(matches)) {
 					//System.out.println("coming in update dictionaryCayugaList");
@@ -623,6 +628,85 @@ public class DictionaryController {
 			}
 			
 		}
+    }
+    
+    public String createRegularExpression(String input) {
+    	
+		String matches = input;
+		
+		StringBuilder sb = new StringBuilder(matches);
+		int begin = 0;
+		int mid = 0;
+		int end = 0;
+		for(int a=0; a<sb.length();a++) {
+			
+			if(sb.charAt(a)=='*'&& a == 0)	{
+				begin = 1;
+				sb.deleteCharAt(a);
+			} else if(sb.charAt(a)=='*'&& a == sb.length() -1 ){
+				end = 1;
+				sb.deleteCharAt(a);
+			} else if(sb.charAt(a)=='*'&& a!= 0 && a!= sb.length() -1)	{
+				
+				sb.deleteCharAt(a);
+				sb.insert(a, ".");
+				mid = 1;
+			}
+		}
+		matches = sb.toString();
+
+		matches = matches.replace(".", ".*");
+
+		if(begin == 0 && mid == 0 && end == 0) {
+			matches = ".* "+matches+" .*";
+		} else if (begin == 1 && mid == 0 && end == 0) {
+			matches = " .*"+matches+" .*";
+		} else if (begin == 0 && mid == 1 && end == 0) {
+			matches = ".* "+matches+" .*";
+		} else if (begin == 0 && mid == 0 && end == 1) {
+			matches = ".* "+matches+".* ";
+		} else if (begin == 1 && mid == 1 && end == 0) {
+			matches = " .*"+matches+" .*";
+		} else if (begin == 0 && mid == 1 && end == 1) {
+			matches = ".* "+matches+".* ";
+		} else if (begin == 1 && mid == 0 && end == 1) {
+			matches = " .*"+matches+".* ";
+		} else if (begin == 1 && mid == 1 && end == 1) {
+			matches = " .*"+matches+".* ";
+		}
+		
+//		if(sb.charAt(0)=='*') {
+//			
+//			sb.deleteCharAt(0);
+//			sb.insert(0, " .*");
+//			matches = sb.toString();
+//			matches = matches +" .*";	
+//			
+//		} else if(sb.charAt(sb.length()-1)=='*') {
+//			
+//			sb.deleteCharAt(sb.length()-1);
+//			sb.insert(0, ".* ");
+//			matches = sb.toString();
+//			matches = " .*"+matches;	
+//			
+//		}
+//		
+//		else {
+//			matches = sb.toString();
+//			matches = ".* "+matches +" .*";	
+//		}
+//		
+		
+		
+//		matches = sb.toString();
+//		matches = " .*"+matches +" .*";	
+		//matches = ".*"+matches+".*";
+		//System.out.println(sb);
+		//System.out.println(matches);
+
+    	
+    	
+    	return matches;
     }
     
     @FXML
@@ -642,7 +726,7 @@ public class DictionaryController {
 			
 				String words = dictionaryEnglishList.get(i).toString();
 		
-				String matches = ".*"+currentInput+".*";
+				String matches = currentInput;
 				
 				StringBuilder words_sb = new StringBuilder(words);
 				for(int a=0; a<words_sb.length();a++) {
@@ -650,7 +734,9 @@ public class DictionaryController {
 					if(words_sb.charAt(a)==')'||words_sb.charAt(a)=='(') words_sb.deleteCharAt(a);
 					
 				}
+				
 				words = words_sb.toString();
+				words = " "+words+" ";
 				
 				StringBuilder sb = new StringBuilder(matches);
 				for(int a=0; a<sb.length();a++) {
@@ -660,7 +746,9 @@ public class DictionaryController {
 				}
 					
 				matches = sb.toString();
-							
+				matches = " "+matches +" ";	
+				matches = ".*"+matches+".*";
+				System.out.println(matches);
 				if(words.matches(matches)) {
 
 					Dictionary tempData = new Dictionary();
@@ -672,8 +760,10 @@ public class DictionaryController {
 		} else {
 			
 			for(int i=0; i<dictionaryCayugaList.size();i++) {
-				
-				if(dictionaryCayugaList.get(i).toString().matches(".*"+currentInput+".*")) {
+				String words = dictionaryCayugaList.get(i).toString();
+				words = " "+words+" ";
+				currentInput = " "+currentInput +" ";
+				if(words.matches(".*"+currentInput+".*")) {
 					//System.out.println("coming in update dictionaryCayugaList");
 					Dictionary tempData = new Dictionary();
 					tempData.setSecondcol(dictionaryEnglishList.get(i));
