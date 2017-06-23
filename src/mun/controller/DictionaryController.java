@@ -11,6 +11,7 @@ import mun.model.Dictionary;
 import mun.MainApp;
 import mun.util.Constant;
 import mun.util.ExportDictionary;
+import mun.util.ImportDictionary;
 import mun.util.RemoveLine;
 
 import java.awt.event.ActionListener;
@@ -545,7 +546,8 @@ public class DictionaryController {
     	
     	String file = Constant.dictionaryPath;
 		FileInputStream fstream;
-		
+		dictionaryCayugaList.clear();
+		dictionaryEnglishList.clear();
 		try {
 			
 			
@@ -1064,28 +1066,14 @@ public class DictionaryController {
         FileChooser fileChooser = new FileChooser();
         
         //Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*cayuga-english.txt)", "*cayuga-english.txt");
         fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.setInitialFileName("cayuga-english");
-        //Show save file dialog
         File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
         
         if(file != null){
-//        	String filePath = Constant.dictionaryPath;
-//        	File inputFile = new File(filePath);
-        	new ExportDictionary(file);
-           // SaveFile(Santa_Claus_Is_Coming_To_Town, file);
-        }
-    	
-//    	String filePath = Constant.dictionaryPath;
-//    	File fout = new File(filePath);	
-//    	HostServices hostServices = getHostServices() ; 
-//    	hostServices.showDocument(file.toURI().toString());
-        
-        
-
-        
-        
+        	new ExportDictionary(file);    
+        }     
     }
     
     public void importDictionary() {
@@ -1099,7 +1087,8 @@ public class DictionaryController {
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
         if (file != null) {
-            //mainApp.loadPersonDataFromFile(file);
+            new ImportDictionary(file);
+            initialArrayList();
         }
     }
 }
