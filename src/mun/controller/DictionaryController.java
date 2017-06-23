@@ -10,21 +10,38 @@ package mun.controller;
 import mun.model.Dictionary;
 import mun.MainApp;
 import mun.util.Constant;
+import mun.util.ExportDictionary;
 import mun.util.RemoveLine;
+
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
+
+
+import javax.swing.event.HyperlinkEvent.EventType;
+
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.AutoCompletionBinding.ISuggestionRequest;
+import org.controlsfx.control.textfield.TextFields;
+
+import javafx.application.HostServices;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -39,8 +56,13 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 public class DictionaryController {
@@ -97,10 +119,14 @@ public class DictionaryController {
 	  
 	  private ArrayList<String> dictionaryEnglishList = new ArrayList<>();
 	  private ArrayList<String> dictionaryCayugaList = new ArrayList<>();
+	  private String firstItem = "";
+	  private String inputTextString ="";
+	  private ArrayList<String> aa = new ArrayList<>();
 	  public DictionaryController() {
 		  
 	  }
 	
+	  
 	  /**
 	     * Initializes the controller class. This method is automatically called
 	     * after the fxml file has been loaded.
@@ -126,42 +152,246 @@ public class DictionaryController {
 //            }
 //        });
     	
-    	
+//    	TextFields.bindAutoCompletion(inputText, new Callback<AutoCompletionBinding.ISuggestionRequest, ArrayList<String>>() {
+//    	    @Override
+//    	    public ArrayList<String> call(AutoCompletionBinding.ISuggestionRequest param) {
+//    	    	
+//    	    	
+//    	    	
+//    	    	ArrayList<String> aa = new ArrayList<>();
+//    	    	String inputString = param.getUserText();
+//    	    	inputString = inputString.replace("*", ".*");
+//    	    	System.out.println(inputString);
+//    	    	if(inputString.length() != 0 && inputString != null) {
+//        	    	
+//    	    		if(englishBut.selectedProperty().getValue())
+//	        	    	for(String item :dictionaryEnglishList) {
+//	        	    		if(item.matches("^"+inputString+".*$"))
+//	        	    			aa.add(item);
+//	        	    	}
+//    	    		else
+//            	    	for(String item :dictionaryCayugaList) {
+//            	    		//System.out.println(item + "          " +inputString);
+//            	    		if(item.matches("^"+inputString+".*$")){
+//            	    			//System.out.println("coming");
+//            	    			aa.add(item);
+//            	    		}
+//            	    			
+//            	    	}
+//    	    		
+//    	    		return aa;	
+//    	    	} else {
+//    	    		return aa;
+//    	    	}   	
+//    	    }
+//    	});
 
+//        ArrayList al = new ArrayList();
+//        System.out.println("Initial size of al: " + al.size());
+//
+//        // add elements to the array list
+//        al.add("Caaaa");
+//        al.add("CCa");
+//        al.add("Eaa");
+//        al.add("Baa");
+//        al.add("Daa");
+//        al.add("Faa");
+//        
+//    	TextFields.bindAutoCompletion(inputText,al);
+//    	TextFields.createClearableTextField();
+//    	inputText.setOnKeyPressed((KeyEvent e)->{
+//    		switch(e.getCode()) {
+//    			case ENTER:
+//    				System.out.println("hi");
+//    				break;
+//    			default:
+//    				System.out.println("hiaaaaaaaaa");
+//    				break;
+//    		}
+//    		
+//    	});
+    	//ArrayList<String> test = new ArrayList<String>();
+//    	AutoCompletionTextFieldBinding<String> autoTF = new AutoCompletionTextFieldBinding(inputText, new Callback<AutoCompletionBinding.ISuggestionRequest, ArrayList<String>>(){
+//
+//			@Override
+//			public ArrayList<String> call(ISuggestionRequest param) {
+//				// TODO Auto-generated method stub
+//				return null;
+//			}
+//    		
+//    	});
     	
-    	new AutoCompletionTextFieldBinding(inputText, new Callback<AutoCompletionBinding.ISuggestionRequest, ArrayList<String>>() {
+    	//autoTF.buildEventDispatchChain(null);
+    	//EventHandler
+  
+//    	//EventHandler.create(ActionListener.class, autoTF, "doActionEvent", "");
+//    	autoTF.addEventHandler(null, new EventHandler(){
+//
+//			@Override
+//			public void handle(Event event) {
+//				// TODO Auto-generated method stub
+//				System.out.println("hi33");
+//			}
+//    		
+//    	});
+    	
+//    	inputText.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//            	System.out.println("hissss");
+//                //statusBarLabel.setText("状态：当前字符数为：" + textField.getText().length());
+//            }
+//        });
+
+//    	inputText = TextFields.createClearablePasswordField();
+//    	AnchorPane.setBottomAnchor(inputText, 20d);
+//    	AnchorPane.setLeftAnchor(inputText, 20d);
+    	AutoCompletionTextFieldBinding<String> autoTF = new AutoCompletionTextFieldBinding(inputText, new Callback<AutoCompletionBinding.ISuggestionRequest, ArrayList<String>>() {
     	    @Override
     	    public ArrayList<String> call(AutoCompletionBinding.ISuggestionRequest param) {
     	    	
-    	    	ArrayList<String> aa = new ArrayList<>();
+    	    	aa = new ArrayList<>();
     	    	String inputString = param.getUserText();
+    	    	
+    	    	inputTextString = inputString;
+    	    	
+    	    	
     	    	inputString = inputString.replace("*", ".*");
     	    	//System.out.println(inputString);
     	    	if(inputString.length() != 0 && inputString != null) {
         	    	
     	    		if(englishBut.selectedProperty().getValue())
 	        	    	for(String item :dictionaryEnglishList) {
-	        	    		if(item.matches("^"+inputString+".*$"))
+	        	    		if(item.matches("^"+inputString+".*$")){
+	        	    			//System.out.println(item);
+	        	    			//if(firstItem.length() == 0)firstItem = item;
 	        	    			aa.add(item);
+	        	    		}
+	        	    			
 	        	    	}
     	    		else
             	    	for(String item :dictionaryCayugaList) {
             	    		//System.out.println(item + "          " +inputString);
             	    		if(item.matches("^"+inputString+".*$")){
-            	    			//System.out.println("coming");
+            	    			//System.out.println(item);
+            	    			//if(firstItem.length() == 0)firstItem = item;
             	    			aa.add(item);
             	    		}
             	    			
             	    	}
-    	    		
+    	    		//System.out.println("change");
+    	    		Collections.sort(aa);
     	    		return aa;	
     	    	} else {
     	    		return aa;
     	    	}   	
     	    }
     	});
+
+    	autoTF.setMinWidth(457);
+//    	autoTF.setUserInput("why");
+//    	//autoTF.
+//    	
+//    	inputText.setOnKeyPressed((KeyEvent e)->{
+//		switch(e.getCode()) {
+//			case ENTER:
+//				System.out.println("hifff");
+//				break;
+//			default:
+//				System.out.println("hiffdddddf");
+//				break;
+//		}
+//		
+//	});
     	
-    
+//    	mainScene.setOnKeyPressed((KeyEvent e)->{
+//		switch(e.getCode()) {
+//			case ENTER:
+//				System.out.println("qinong qi");
+//				break;
+//			default:
+//				System.out.println("hiffdqinong qiddddf");
+//				break;
+//		}
+//		
+//	});
+    	
+    	//autoTF.buildEventDispatchChain(null);
+    //	autoTF.setHideOnEscape(true);
+    	
+	  	autoTF.setOnAutoCompleted(new EventHandler(){
+	
+				@Override
+				public void handle(Event event) {
+					// TODO Auto-generated method stub
+					System.out.println(inputText.getText());
+					//inputText.setText("dddddddddd");
+					firstItem = aa.get(0);
+					System.out.println("firstItem ==="+firstItem);
+					System.out.println(inputTextString);
+					firstItem = aa.get(0);
+					if(inputText.getText().equalsIgnoreCase(firstItem)){
+						inputText.setText(inputTextString);
+						firstItem = "";
+						inputTextString = "";
+						onEnter(null);
+					}
+				}
+	    		
+	    	});
+    	
+    	
+      	//autoTF.re
+      	//EventType h = EventType("ROOT");
+      	//javafx.event.EventType.ROOT,
+//    	autoTF.addEventHandler(javafx.event.EventType.ROOT, new EventHandler(){
+//
+//			@Override
+//			public void handle(Event event) {
+//				// TODO Auto-generated method stub
+//				//event.getEventType()
+//				//System.out.println(event.getEventType());
+//				//System.out.println(inputText.getText());
+////	    		switch(e.getCode()) {
+////    			case ENTER:
+//   				System.out.println("hi---------------");
+////    				break;
+////    			default:
+////    				break;
+////    		}
+////				
+////				System.out.println("hi33");
+//			}
+//    		
+//    	});
+//    	
+//    	autoTF.setUserInput("dddd");
+//    	
+//    	autoTF.addEventHandler(KeyEvent.KEY_TYPED, new EventHandler(){
+//
+//			@Override
+//			public void handle(Event event) {
+//				// TODO Auto-generated method stub
+//				//event.getEventType()
+//				System.out.println("1111");
+//				System.out.println(event.getEventType());
+////	    		switch(e.getCode()) {
+////    			case ENTER:
+////    				System.out.println("hi");
+////    				break;
+////    			default:
+////    				break;
+////    		}
+////				
+////				System.out.println("hi33");
+//			}
+//    		
+//    	});
+    	
+    	
+    	
+    	
+    	
 
       dictionaryTable.setRowFactory( tv -> {
       TableRow<Dictionary> row = new TableRow<>();
@@ -829,4 +1059,47 @@ public class DictionaryController {
 
     }
     
+    public void exportDictionary() {
+    	System.out.println("export");
+        FileChooser fileChooser = new FileChooser();
+        
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("cayuga-english");
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+        
+        if(file != null){
+//        	String filePath = Constant.dictionaryPath;
+//        	File inputFile = new File(filePath);
+        	new ExportDictionary(file);
+           // SaveFile(Santa_Claus_Is_Coming_To_Town, file);
+        }
+    	
+//    	String filePath = Constant.dictionaryPath;
+//    	File fout = new File(filePath);	
+//    	HostServices hostServices = getHostServices() ; 
+//    	hostServices.showDocument(file.toURI().toString());
+        
+        
+
+        
+        
+    }
+    
+    public void importDictionary() {
+    	System.out.println("import");
+    	FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "TXT files (cayuga-english.txt)", "cayuga-english.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if (file != null) {
+            //mainApp.loadPersonDataFromFile(file);
+        }
+    }
 }

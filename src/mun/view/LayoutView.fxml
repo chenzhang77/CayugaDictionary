@@ -66,6 +66,8 @@
                               <Image url="@Logo.png" />
                            </image>
                         </ImageView>
+                        <Button layoutX="95.0" layoutY="27.0" mnemonicParsing="false" onAction="#exportDictionary" text="Button" />
+                        <Button layoutX="200.0" layoutY="27.0" mnemonicParsing="false" onAction="#importDictionary" text="Button" />
                      </children>
                   </Pane>
                </children>
