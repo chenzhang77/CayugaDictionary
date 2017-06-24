@@ -113,6 +113,15 @@ public class DictionaryController {
 	  private Button showButton;  
 	  @FXML
 	  private Button deleteButton;  
+	  
+	  
+	  
+	  @FXML
+	  private Button exportButton;  
+	  @FXML
+	  private Button importButton; 
+	  
+	  
 	  @FXML
 	  private TextField inputText;
 	  
@@ -401,6 +410,8 @@ public class DictionaryController {
     	  if(event.getClickCount() == 1 && (! row.isEmpty()) ) {
     		  
     		  logoImage.setVisible(false);
+    		  importButton.setVisible(false);
+    		  exportButton.setVisible(false);
     		  showButton.setVisible(true);
     		  deleteButton.setVisible(true);		  
 //    		  Dictionary rowData = row.getItem();
@@ -476,12 +487,16 @@ public class DictionaryController {
     	                	inputText.clear();
     	                	
     	                	  logoImage.setVisible(true);
+    	                	  importButton.setVisible(true);
+    	            		  exportButton.setVisible(true);
     	            		  showButton.setVisible(false);
     	            		  deleteButton.setVisible(false);
     	                	
     	            	} else {
     	            		inputText.clear();
 		            		  logoImage.setVisible(true);
+		            		  importButton.setVisible(true);
+    	            		  exportButton.setVisible(true);
 		            		  showButton.setVisible(false);
 		            		  deleteButton.setVisible(false);
 		            		  
@@ -786,7 +801,8 @@ public class DictionaryController {
     	related_1.setVisible(false);
     	related_2.setVisible(false);
     	related_3.setVisible(false);
-    	
+//    	exportButton.setVisible(false);
+//		importButton.setVisible(false);
     	
        	String currentInput = inputText.getText();
        	if(currentInput.length() == 0) return;
@@ -948,7 +964,8 @@ public class DictionaryController {
     	related_1.setVisible(false);
     	related_2.setVisible(false);
     	related_3.setVisible(false);
-    	
+//    	exportButton.setVisible(false);
+//		importButton.setVisible(false);
     	
        	String currentInput = inputText.getText();
        	if(currentInput.length() == 0) return;
@@ -1085,10 +1102,12 @@ public class DictionaryController {
 
         // Show save file dialog
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-
+       
         if (file != null) {
-            new ImportDictionary(file);
+            new ImportDictionary(file,dictionaryEnglishList,dictionaryCayugaList);
             initialArrayList();
+            mainApp.getData().clear();
+        	inputText.clear();
         }
     }
 }

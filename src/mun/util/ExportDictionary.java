@@ -25,7 +25,7 @@ public class ExportDictionary {
 		
 		try {
 
-	          FileOutputStream fos = new FileOutputStream(outputfile,true);
+	          FileOutputStream fos = new FileOutputStream(outputfile,false);
 	          OutputStreamWriter bw = new OutputStreamWriter(fos, "UTF-16");
 	          
 	          String file = Constant.dictionaryPath;
@@ -35,7 +35,6 @@ public class ExportDictionary {
 	  			Reader chars = new InputStreamReader(fstream, StandardCharsets.UTF_16);
 	  			BufferedReader br = new BufferedReader(chars);
 	  			String strLine;
-	  			
 	  			//Read File Line By Line
 	  			while ((strLine = br.readLine()) != null && !strLine.trim().isEmpty())   {
 	  				String outsingleStirng = String.format("%s%s",strLine,System.getProperty("line.separator"));
@@ -50,7 +49,6 @@ public class ExportDictionary {
 	  			// TODO Auto-generated catch block
 	  			e.printStackTrace();
 	  		}
-
 	      }catch (IOException ex) {
 	          ex.printStackTrace();
 	      }
