@@ -47,8 +47,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -63,6 +65,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
@@ -147,7 +150,69 @@ public class DictionaryController {
         // Initialize the person table with the two columns.
     	
     	firsteColumn.setCellValueFactory(cellData -> cellData.getValue().secondcolProperty());
+    	//firsteColumn.setMaxWidth(400);
+    	
+    	
+    	firsteColumn.setCellFactory(new Callback<TableColumn<Dictionary, String>, TableCell<Dictionary, String>>() {
+
+			@Override
+		     public TableCell<Dictionary, String> call(
+		                TableColumn<Dictionary, String> param) {
+		            TableCell<Dictionary, String> cell = new TableCell<>();
+		            Text text = new Text("term of addess for a maternal grandmotherterm of addess for a maternal grandmother");
+		            cell.setGraphic(text);
+		            cell.setPrefHeight(Control.USE_COMPUTED_SIZE*3);
+		           // cell.itemProperty().getValue()
+		            //System.out.println(cell.itemProperty().getValue());
+		            //System.out.println(param.getUserData());
+//		            System.out.println("-----------");
+//		            System.out.println(param.getCellData(0));
+		            
+		            cell.setMinSize(400, 80);
+		            text.wrappingWidthProperty().bind(cell.widthProperty());
+		            text.textProperty().bind(cell.itemProperty());
+		            return cell ;
+		        }
+    	    });
+    	
+    	
+    	
+//    	firsteColumn.setCellFactory(new Callback<TableColumn<String,String>, TableCell<String,String>>() {
+//            @Override
+//            public TableCell<String, String> call(TableColumn<String, String> param) {
+//                return new XCell();
+//            }
+//        });
+
+    	
+    	
      	lastColumn.setCellValueFactory(cellData -> cellData.getValue().thirdcolProperty());
+     	
+     	
+     	
+     	lastColumn.setCellFactory(new Callback<TableColumn<Dictionary, String>, TableCell<Dictionary, String>>() {
+
+			@Override
+		     public TableCell<Dictionary, String> call(
+		                TableColumn<Dictionary, String> param) {
+		            TableCell<Dictionary, String> cell = new TableCell<>();
+		            Text text = new Text("term of addess for a maternal grandmotherterm of addess for a maternal grandmother");
+		            cell.setGraphic(text);
+		            cell.setPrefHeight(Control.USE_COMPUTED_SIZE*3);
+		           // cell.itemProperty().getValue()
+		            //System.out.println(cell.itemProperty().getValue());
+		            //System.out.println(param.getUserData());
+//		            System.out.println("-----------");
+//		            System.out.println(param.getCellData(0));
+		            
+		            cell.setMinSize(400, 80);
+		            text.wrappingWidthProperty().bind(cell.widthProperty());
+		            text.textProperty().bind(cell.itemProperty());
+		            return cell ;
+		        }
+    	    });
+     	
+     	
     	dictionaryTable.setVisible(true);
     	showButton.setVisible(false);
     	deleteButton.setVisible(false);
@@ -415,6 +480,12 @@ public class DictionaryController {
     		  showButton.setVisible(true);
     		  deleteButton.setVisible(true);		  
 //    		  Dictionary rowData = row.getItem();
+    		  
+    		  
+    		 // Dictionary tempData = dictionaryTable.getSelectionModel().getSelectedItem();
+    		  //dictionaryTable.getSelectionModel().getSelectedCells().get(0).
+    		  //dictionaryTable.setFixedCellSize(600.0);
+    		  //dictionaryTable.getSelectionModel().ce
     		  
     		  //double click the row, show the dialog
     	  }else if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
